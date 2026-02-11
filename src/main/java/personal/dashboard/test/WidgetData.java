@@ -2,7 +2,7 @@ package personal.dashboard.test;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Data // Génère les getters, setters, toString, equals et hashCode
 @AllArgsConstructor // Génère un constructeur
