@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Dashboard</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h1 class="mb-4">Personal Dashboard Self-hosted</h1>
+  <div id="app" class="grid">
+    Loading dashboard...
+  </div>
+  <script>
+    async function loadDashboard() {
+      try {
+        const response = await fetch('/api/dashboard/widgets');
+        const widgets = await response.json();
+
+        const container = document.getElementById('app');
+        container.innerHTML = ''; // Clear loading text
+
+        widgets.forEach(widget => {
+          const card = document.createElement('div');
+          card.className = `card mb-3 border-${widget.status}`;
+          card.innerHTML = `
+            <h3>${widget.title}</h3>
+            <p>${widget.content}</p>
+          `;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        console.error('Error loading dashboard:', error);
+        document.getElementById('app').innerText = 'Failed to load dashboard.';
+      }
+    }
+
+    loadDashboard();
+    setInterval(loadDashboard, 5000); // Refresh
+  </script>
+</body>
+</html>
