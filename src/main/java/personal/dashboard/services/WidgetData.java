@@ -1,4 +1,4 @@
-package personal.dashboard.test;
+package personal.dashboard.services;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
