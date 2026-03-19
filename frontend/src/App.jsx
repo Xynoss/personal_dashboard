@@ -55,7 +55,6 @@ function App() {
 
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           {loading && <LinearProgress color="secondary" sx={{ mb: 2 }} />}
-
           <Grid container spacing={3}>
             {widgets.map((widget, index) => (
               <Grid item xs={12} md={4} key={index}>

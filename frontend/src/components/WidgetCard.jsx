@@ -41,6 +41,19 @@ export default function WidgetCard({ widget, darkMode }) {
               sx={{ height: 10, borderRadius: 5 }}
             />
         )}
+
+        {widget.title.startsWith('Weather') && (
+          <Box display="flex" alignItems="center" mt={1}>
+            <img
+              src={`https://openweathermap.org/img/wn/${widget.icon}@2x.png`}
+              alt="weather icon"
+              style={{ width: 50, height: 50 }}
+            />
+            <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
+              {widget.description}
+            </Typography>
+          </Box>
+        )}
       </CardContent>
     </Card>
   );
