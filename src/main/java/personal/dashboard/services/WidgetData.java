@@ -9,4 +9,6 @@ public class WidgetData {
   private String title;
   private String content;
   private String status; // ex: "OK", "WARNING", "ERROR"
+  private String icon;
+  private int gridSize;
 }

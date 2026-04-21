@@ -31,9 +31,10 @@ public class DashboardController {
     WeatherData weatherData = weatherService.getLiveWeather();
 
     return Arrays.asList(
-        new WidgetData("Time", LocalTime.now().truncatedTo(ChronoUnit.SECONDS).toString(), "info"),
-        new WidgetData("CPU Usage", cpu + "%", status),
+        new WidgetData("Time", LocalTime.now().truncatedTo(ChronoUnit.SECONDS).toString(), "info", null, 2),
+        new WidgetData("CPU Usage", cpu + "%", status, null,8),
         new WidgetData("Weather - " + weatherData.getCity(),
-            weatherData.getTemperature() + "°C, " + weatherData.getDescription(), "info"));
+            weatherData.getTemperature() + "°C, " + weatherData.getDescription(), "info", weatherData.getIcon(),4)
+      );
   }
 }
