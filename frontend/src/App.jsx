@@ -11,6 +11,7 @@ function App() {
   const [widgets, setWidgets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
+  const [cpuHistory, setCpuHistory] = useState([]);
 
   // Configuration du thème
   const theme = createTheme({
@@ -31,6 +32,15 @@ function App() {
       .then(response => response.json())
       .then(data => {
         setWidgets(data);
+        const cpuWidget = data.find(w => w.title === "CPU Usage");
+        if (cpuWidget)
+        {
+          const newValue = parseFloat(cpuWidget.content);
+          setCpuHistory(prev => {
+            const updated = [...prev, {time: new Date().toLocaleTimeString(), value: newValue }];
+            return updated.slice(-15); // 15 points d'historique pas plus
+          });
+        }
         setLoading(false);
       })
       .catch(error => console.error("Erreur API:", error));
@@ -57,9 +67,9 @@ function App() {
           {loading && <LinearProgress color="secondary" sx={{ mb: 2 }} />}
           <Grid container spacing={3}>
             {widgets.map((widget, index) => (
-              <Grid item xs={12} md={4} key={index}>
+              <Grid item xs={12} key={index}>
                 {/* On utilise notre composant WidgetCard pour chaque widget */}
-                <WidgetCard widget={widget} darkMode={darkMode} />
+                <WidgetCard widget={widget} darkMode={darkMode} history={cpuHistory}/>
               </Grid>
             ))}
           </Grid>

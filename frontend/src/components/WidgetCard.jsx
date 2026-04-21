@@ -1,6 +1,7 @@
 import { Card, CardContent, Typography, Box, Chip, LinearProgress} from '@mui/material';
+import CpuChart from './CpuChart';
 
-export default function WidgetCard({ widget, darkMode }) {
+export default function WidgetCard({ widget, darkMode, history }) {
 
   // La fonction de couleur est maintenant encapsulée ici
   const getStatusColor = (status) => {
@@ -16,8 +17,8 @@ export default function WidgetCard({ widget, darkMode }) {
   const numericValue = isCpuWidget ? parseFloat(widget.content) : 0;
 
   return (
-    <Card elevation={darkMode ? 4 : 2}>
-      <CardContent>
+    <Card elevation={darkMode ? 4 : 2} sx={{ display: 'flex', flexDirection: 'column' , width: isCpuWidget ? '500px' : '100%' }}>
+      <CardContent sx={{ flexGrow: 1 }}>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <Typography variant="h6" color="text.secondary">
             {widget.title}
@@ -29,18 +30,20 @@ export default function WidgetCard({ widget, darkMode }) {
           />
         </Box>
 
-        <Typography variant="h4" component="div" sx={{ mb: isCpuWidget ? 2 : 0 }}>
-          {widget.content}
-        </Typography>
+        <Box sx={{
+          display:'flex',
+          flexDirection: isCpuWidget && widget.gridSize > 12 ? 'row' : 'column',
+          alignItems: 'center',
+          gap: 2
+        }}>
+          <Typography variant="h4" sx={{ mb: isCpuWidget ? 2 : 0 }}>
+            {widget.content}
+          </Typography>
 
-        {isCpuWidget && (
-            <LinearProgress
-              variant="determinate"
-              value={numericValue}
-              color={getStatusColor(widget.status)}
-              sx={{ height: 10, borderRadius: 5 }}
-            />
-        )}
+          {isCpuWidget && (
+            <CpuChart data={history}/>
+          )}
+        </Box>
 
         {widget.title.startsWith('Weather') && (
           <Box display="flex" alignItems="center" mt={1}>
