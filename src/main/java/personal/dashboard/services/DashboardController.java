@@ -1,13 +1,15 @@
 package personal.dashboard.services;
 
-import org.apache.commons.logging.Log;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/dashboard")
@@ -24,6 +26,14 @@ public class DashboardController {
     this.weatherService = weatherService;
   }
 
+  @GetMapping("/server-time")
+  public Map<String, String> getServerTime() {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    String time = LocalDateTime.now().format(formatter);
+
+    return Collections.singletonMap("time", time);
+  } 
+
   @GetMapping("/widgets") // acces via GET /api/dashboard/widgets
   public List<WidgetData> getWidgets() {
     double cpu = monitoringService.getCpuUsage();
@@ -31,7 +41,6 @@ public class DashboardController {
     WeatherData weatherData = weatherService.getLiveWeather();
 
     return Arrays.asList(
-        new WidgetData("Time", LocalTime.now().truncatedTo(ChronoUnit.SECONDS).toString(), "info", null, 2),
         new WidgetData("CPU Usage", cpu + "%", status, null,8),
         new WidgetData("Weather - " + weatherData.getCity(),
             weatherData.getTemperature() + "°C, " + weatherData.getDescription(), "info", weatherData.getIcon(),4)
